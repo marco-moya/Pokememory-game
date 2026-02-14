@@ -1,0 +1,75 @@
+:root {
+  /* Colores principales (inspirados en Pokédex) */
+  --primary-red: #EE1515;
+  --primary-blue: #3B4CCA;
+  --primary-yellow: #FFDE00;
+  
+  /* Colores secundarios */
+  --electric-yellow: #F7D02C;
+  --grass-green: #7AC74C;
+  --fire-orange: #FF9C54;
+  --water-blue: #6390F0;
+  
+  /* Neutros */
+  --dark-gray: #2C2C2C;
+  --medium-gray: #5A5A5A;
+  --light-gray: #E8E8E8;
+  --white: #FFFFFF;
+  
+  /* Backgrounds */
+  --bg-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --bg-card: #FFFFFF;
+  --bg-card-back: linear-gradient(135deg, #EE1515 0%, #FFDE00 100%);
+  
+  /* Estados */
+  --success: #4CAF50;
+  --error: #F44336;
+  --warning: #FF9800;
+  
+  /* Sombras */
+  --shadow-sm: 0 2px 4px rgba(0,0,0,0.1);
+  --shadow-md: 0 4px 8px rgba(0,0,0,0.15);
+  --shadow-lg: 0 8px 16px rgba(0,0,0,0.2);
+  --shadow-card: 0 6px 12px rgba(0,0,0,0.15);
+  
+  /* Transiciones */
+  --transition-fast: 0.2s ease;
+  --transition-normal: 0.3s ease;
+  --transition-slow: 0.5s ease;
+  
+  /* Border Radius */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-full: 9999px;
+
+  /* Fonts */
+  --font-title: 'Press Start 2P', cursive;    /* Títulos estilo retro */
+  --font-body: 'Poppins', sans-serif;         /* Textos generales */
+
+  /* Tamaños */
+  --text-xs: 0.75rem;   /* 12px */
+  --text-sm: 0.875rem;  /* 14px */
+  --text-base: 1rem;    /* 16px */
+  --text-lg: 1.125rem;  /* 18px */
+  --text-xl: 1.25rem;   /* 20px */
+  --text-2xl: 1.5rem;   /* 24px */
+  --text-3xl: 2rem;     /* 32px */
+  --text-4xl: 2.5rem;   /* 40px */
+  
+  /* Pesos */
+  --font-normal: 400;
+  --font-medium: 500;
+  --font-semibold: 600;
+  --font-bold: 700;
+}
+
+@font-face {
+  font-family: 'Press Start 2P';
+  src: url("../assets/fonts/Press_Start_2P/PressStart2P-Regular.ttf");
+}
+
+@font-face {
+  font-family: 'Poppins';
+  src: url("../assets/fonts/Poppins/Poppins-Regular.ttf");
+}

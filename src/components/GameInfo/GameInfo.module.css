@@ -1,0 +1,68 @@
+.gameInfo {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin: 2rem 0;
+  padding: 0 1rem;
+  flex-wrap: wrap;
+}
+
+.infoCard {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: var(--bg-card);
+  padding: 1rem 2rem;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  min-width: 200px;
+  transition: transform var(--transition-fast);
+}
+
+.infoCard:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.icon {
+  font-size: 2rem;
+  color: var(--primary-blue);
+}
+
+.infoContent {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.label {
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  color: var(--medium-gray);
+  font-weight: 500;
+}
+
+.value {
+  font-family: var(--font-title);
+  font-size: 1.25rem;
+  color: var(--dark-gray);
+}
+
+@media (max-width: 768px) {
+  .gameInfo {
+    gap: 1rem;
+  }
+
+  .infoCard {
+    min-width: 150px;
+    padding: 0.75rem 1.5rem;
+  }
+
+  .icon {
+    font-size: 1.5rem;
+  }
+
+  .value {
+    font-size: 1rem;
+  }
+}

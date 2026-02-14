@@ -1,0 +1,291 @@
+.gameOptions {
+  width: 100%;
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 2rem 1rem;
+}
+
+.sectionTitle {
+  font-family: var(--font-title);
+  font-size: 2rem;
+  color: var(--white);
+  text-align: center;
+  margin-bottom: 2rem;
+  text-shadow: 
+    2px 2px 0 var(--primary-yellow),
+    -1px -1px 0 var(--dark-gray),
+    1px -1px 0 var(--dark-gray),
+    -1px 1px 0 var(--dark-gray),
+    1px 1px 0 var(--dark-gray);
+  letter-spacing: 2px;
+  animation: fadeInDown 0.8s ease-out;
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.optionsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  padding: 1rem;
+}
+
+.optionCard {
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  box-shadow: var(--shadow-lg);
+  transition: all var(--transition-normal);
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  animation: fadeInUp 0.8s ease-out backwards;
+}
+
+.optionCard::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 6px;
+  transition: height var(--transition-normal);
+}
+
+.optionCard.blue::before {
+  background: linear-gradient(90deg, var(--primary-blue), var(--water-blue));
+}
+
+.optionCard.red::before {
+  background: linear-gradient(90deg, var(--primary-red), var(--fire-orange));
+}
+
+.optionCard.yellow::before {
+  background: linear-gradient(90deg, var(--primary-yellow), var(--electric-yellow));
+}
+
+.optionCard:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+}
+
+.optionCard:hover::before {
+  height: 100%;
+  opacity: 0.2;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.iconWrapper {
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--primary-blue), var(--primary-red));
+  border-radius: 50%;
+  box-shadow: var(--shadow-md);
+  transition: transform var(--transition-normal);
+}
+
+.optionCard.blue .iconWrapper {
+  background: linear-gradient(135deg, var(--primary-blue), var(--water-blue));
+}
+
+.optionCard.red .iconWrapper {
+  background: linear-gradient(135deg, var(--primary-red), var(--fire-orange));
+}
+
+.optionCard.yellow .iconWrapper {
+  background: linear-gradient(135deg, var(--primary-yellow), var(--electric-yellow));
+}
+
+.optionCard:hover .iconWrapper {
+  transform: rotate(360deg) scale(1.1);
+}
+
+.cardIcon {
+  font-size: 2rem;
+  color: var(--white);
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+.difficulty {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 0.3rem 0.8rem;
+  border-radius: var(--radius-full);
+  background: var(--light-gray);
+  color: var(--dark-gray);
+  letter-spacing: 1px;
+  box-shadow: var(--shadow-sm);
+}
+
+.cardBody {
+  margin-bottom: 1.5rem;
+}
+
+.cardTitle {
+  font-family: var(--font-title);
+  font-size: 1.1rem;
+  color: var(--dark-gray);
+  margin: 0 0 0.75rem 0;
+  line-height: 1.4;
+}
+
+.cardDescription {
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  color: var(--medium-gray);
+  margin: 0;
+  line-height: 1.6;
+}
+
+.playButton {
+  width: 100%;
+  padding: 0.875rem 1.5rem;
+  background: linear-gradient(135deg, var(--primary-red), var(--fire-orange));
+  color: var(--white);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  box-shadow: var(--shadow-md);
+  position: relative;
+  overflow: hidden;
+}
+
+.optionCard.blue .playButton {
+  background: linear-gradient(135deg, var(--primary-blue), var(--water-blue));
+}
+
+.optionCard.red .playButton {
+  background: linear-gradient(135deg, var(--primary-red), var(--fire-orange));
+}
+
+.optionCard.yellow .playButton {
+  background: linear-gradient(135deg, var(--primary-yellow), var(--electric-yellow));
+  color: var(--dark-gray);
+}
+
+.playButton::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.5s, height 0.5s;
+}
+
+.playButton:hover::before {
+  width: 400px;
+  height: 400px;
+}
+
+.playButton:hover {
+  transform: scale(1.05);
+  box-shadow: var(--shadow-lg);
+}
+
+.playButton:active {
+  transform: scale(0.98);
+}
+
+.playButton span {
+  position: relative;
+  z-index: 1;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .gameOptions {
+    margin: 1rem auto;
+    padding: 1rem 0.5rem;
+  }
+
+  .sectionTitle {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .optionsGrid {
+    gap: 1.5rem;
+    padding: 0.5rem;
+  }
+
+  .optionCard {
+    padding: 1.5rem;
+  }
+
+  .iconWrapper {
+    width: 50px;
+    height: 50px;
+  }
+
+  .cardIcon {
+    font-size: 1.5rem;
+  }
+
+  .cardTitle {
+    font-size: 1rem;
+  }
+
+  .cardDescription {
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .sectionTitle {
+    font-size: 1.25rem;
+  }
+
+  .optionCard {
+    padding: 1.25rem;
+  }
+
+  .cardTitle {
+    font-size: 0.9rem;
+  }
+
+  .playButton {
+    padding: 0.75rem 1rem;
+    font-size: 0.875rem;
+  }
+}
