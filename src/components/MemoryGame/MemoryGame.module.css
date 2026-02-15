@@ -160,6 +160,13 @@
   color: var(--primary-blue);
 }
 
+.bestValue {
+  font-size: var(--text-xs);
+  color: var(--success);
+  font-weight: var(--font-semibold);
+  margin-top: 0.25rem;
+}
+
 .modalButtons {
   display: flex;
   gap: 1rem;

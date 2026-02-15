@@ -1,18 +1,11 @@
 import styles from './Header.module.css';
-import { FaMoon, FaSun, FaTrophy, FaHome } from "react-icons/fa";
-import { useState } from 'react';
+import { FaHome } from "react-icons/fa";
 import { useNavigate, useLocation } from 'react-router';
 
 const Header = () => {
-  const [isDarkMode, setIsDarkMode] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const isHome = location.pathname === '/';
-
-  const toggleDarkMode = () => {
-    setIsDarkMode(!isDarkMode);
-    // Lógica para cambiar el tema se implementará después
-  };
 
   return (
     <header className={styles.header}>
@@ -28,21 +21,6 @@ const Header = () => {
               <FaHome className={styles.icon} />
             </button>
           )}
-          <button 
-            className={styles.controlButton}
-            onClick={toggleDarkMode}
-            aria-label={isDarkMode ? "Activar modo claro" : "Activar modo oscuro"}
-            title={isDarkMode ? "Modo claro" : "Modo oscuro"}
-          >
-            {isDarkMode ? <FaSun className={styles.icon} /> : <FaMoon className={styles.icon} />}
-          </button>
-          <button 
-            className={styles.controlButton}
-            aria-label="Ver puntuaciones"
-            title="Puntuaciones"
-          >
-            <FaTrophy className={styles.icon} />
-          </button>
         </nav>
 
         <div className={styles.branding}>

@@ -1,20 +1,33 @@
 import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router';
+import { useSelector, useDispatch } from 'react-redux';
 import { FaHome, FaRedo, FaTrophy } from 'react-icons/fa';
 import axios from 'axios';
 import Confetti from 'react-confetti';
 import GameInfo from '../GameInfo/GameInfo';
 import GameBoard from '../GameBoard/GameBoard';
+import {
+  incrementMoves,
+  incrementTime,
+  gameWon as gameWonAction,
+  resetCurrentGame
+} from '../../store/slices/memoryGameSlice';
 import styles from './MemoryGame.module.css';
 
 const MemoryGame = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  
+  // Obtener estado de Redux
+  const { moves, time, bestTime, bestMoves } = useSelector(
+    (state) => state.memoryGame
+  );
+  
+  // Estados locales (solo para la UI del juego actual)
   const [cards, setCards] = useState([]);
   const [flippedCards, setFlippedCards] = useState([]);
   const [matchedCards, setMatchedCards] = useState([]);
-  const [moves, setMoves] = useState(0);
-  const [time, setTime] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [gameWon, setGameWon] = useState(false);
@@ -32,11 +45,11 @@ const MemoryGame = () => {
     let interval;
     if (isPlaying && !gameWon) {
       interval = setInterval(() => {
-        setTime((prevTime) => prevTime + 1);
+        dispatch(incrementTime());
       }, 1000);
     }
     return () => clearInterval(interval);
-  }, [isPlaying, gameWon]);
+  }, [isPlaying, gameWon, dispatch]);
 
   // Obtener Pokémon de la API
   const fetchPokemonCards = async () => {
@@ -110,10 +123,10 @@ const MemoryGame = () => {
 
     // Si se voltearon 2 cartas, verificar si son iguales
     if (newFlippedCards.length === 2) {
-      setMoves((prev) => prev + 1);
+      dispatch(incrementMoves());
       checkForMatch(newFlippedCards);
     }
-  }, [cards, flippedCards, isPlaying, gameWon]);
+  }, [cards, flippedCards, isPlaying, gameWon, dispatch]);
 
   // Verificar si hay coincidencia
   const checkForMatch = (flippedIds) => {
@@ -154,18 +167,18 @@ const MemoryGame = () => {
     if (cards.length > 0 && matchedCards.length === cards.length) {
       setGameWon(true);
       setIsPlaying(false);
+      dispatch(gameWonAction());
       setShowConfetti(true);
       setTimeout(() => setShowConfetti(false), 5000);
     }
-  }, [matchedCards, cards]);
+  }, [matchedCards, cards, dispatch]);
 
   // Reiniciar juego
   const handleRestart = () => {
     setCards([]);
     setFlippedCards([]);
     setMatchedCards([]);
-    setMoves(0);
-    setTime(0);
+    dispatch(resetCurrentGame());
     setIsPlaying(false);
     setGameWon(false);
     setShowConfetti(false);
@@ -270,10 +283,16 @@ const MemoryGame = () => {
                   <div className={styles.victoryStat}>
                     <span className={styles.victoryLabel}>Tiempo</span>
                     <span className={styles.victoryValue}>{formatTime(time)}</span>
+                    {bestTime && bestTime < time && (
+                      <span className={styles.bestValue}>Mejor: {formatTime(bestTime)}</span>
+                    )}
                   </div>
                   <div className={styles.victoryStat}>
                     <span className={styles.victoryLabel}>Movimientos</span>
                     <span className={styles.victoryValue}>{moves}</span>
+                    {bestMoves && bestMoves < moves && (
+                      <span className={styles.bestValue}>Mejor: {bestMoves}</span>
+                    )}
                   </div>
                 </div>
                 <div className={styles.modalButtons}>

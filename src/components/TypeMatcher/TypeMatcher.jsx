@@ -1,9 +1,17 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router';
+import { useSelector, useDispatch } from 'react-redux';
 import { FaHome, FaRedo, FaCheck, FaTimes } from 'react-icons/fa';
 import axios from 'axios';
 import Confetti from 'react-confetti';
+import {
+  incrementScore,
+  incrementAttempts,
+  updateTypeStats,
+  addToHistory,
+  resetGame
+} from '../../store/slices/typeMatcherSlice';
 import styles from './TypeMatcher.module.css';
 
 // Todos los tipos de Pokémon con sus colores
@@ -30,11 +38,17 @@ const POKEMON_TYPES = [
 
 const TypeMatcher = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  
+  // Obtener estado de Redux
+  const { score, attempts, bestScore, accuracy } = useSelector(
+    (state) => state.typeMatcher
+  );
+  
+  // Estados locales (solo para la UI del juego actual)
   const [pokemon, setPokemon] = useState(null);
   const [droppedTypes, setDroppedTypes] = useState([]);
   const [isRevealed, setIsRevealed] = useState(false);
-  const [score, setScore] = useState(0);
-  const [attempts, setAttempts] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [draggedType, setDraggedType] = useState(null);
   const [showConfetti, setShowConfetti] = useState(false);
@@ -112,19 +126,37 @@ const TypeMatcher = () => {
     }
 
     setIsRevealed(true);
-    setAttempts(prev => prev + 1);
+    dispatch(incrementAttempts());
 
     // Verificar si todos los tipos son correctos (sin importar el orden)
     const correctTypes = pokemon.types.every(type => 
       droppedTypes.includes(type)
     );
 
-    if (correctTypes && droppedTypes.length === pokemon.types.length) {
-      setScore(prev => prev + 1);
+    const isCorrect = correctTypes && droppedTypes.length === pokemon.types.length;
+
+    if (isCorrect) {
+      dispatch(incrementScore());
+      dispatch(updateTypeStats({ types: pokemon.types, isCorrect: true }));
+      dispatch(addToHistory({
+        pokemonName: pokemon.name,
+        types: pokemon.types,
+        guessedTypes: droppedTypes,
+        isCorrect: true,
+        timestamp: Date.now()
+      }));
       setFeedback({ type: 'success', message: '¡Correcto! 🎉' });
       setShowConfetti(true);
       setTimeout(() => setShowConfetti(false), 3000);
     } else {
+      dispatch(updateTypeStats({ types: pokemon.types, isCorrect: false }));
+      dispatch(addToHistory({
+        pokemonName: pokemon.name,
+        types: pokemon.types,
+        guessedTypes: droppedTypes,
+        isCorrect: false,
+        timestamp: Date.now()
+      }));
       setFeedback({ type: 'error', message: '¡Incorrecto! Intenta de nuevo' });
     }
   };
@@ -136,8 +168,7 @@ const TypeMatcher = () => {
 
   // Reiniciar juego
   const handleRestart = () => {
-    setScore(0);
-    setAttempts(0);
+    dispatch(resetGame());
     fetchRandomPokemon();
   };
 
@@ -229,6 +260,14 @@ const TypeMatcher = () => {
           <div className={styles.statItem}>
             <span className={styles.statLabel}>Intentos</span>
             <span className={styles.statValue}>{attempts}</span>
+          </div>
+          {/* <div className={styles.statItem}>
+            <span className={styles.statLabel}>Precisión</span>
+            <span className={styles.statValue}>{accuracy}%</span>
+          </div> */}
+          <div className={styles.statItem}>
+            <span className={styles.statLabel}>Mejor Score</span>
+            <span className={styles.statValue}>⭐ {bestScore}</span>
           </div>
         </div>
 

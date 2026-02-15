@@ -1,19 +1,32 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router';
+import { useSelector, useDispatch } from 'react-redux';
 import { FaHome } from 'react-icons/fa';
 import axios from 'axios';
+import {
+  incrementScore,
+  resetStreak,
+  incrementTotalPlayed,
+  addToHistory,
+  resetGame
+} from '../../store/slices/whosThatPokemonSlice';
 import styles from './WhosThatPokemon.module.css';
 
 const WhosThatPokemon = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  
+  // Obtener estado de Redux
+  const { score, totalPlayed, streak, bestStreak } = useSelector(
+    (state) => state.whosThatPokemon
+  );
+  
+  // Estados locales (solo para la UI del juego actual)
   const [pokemon, setPokemon] = useState(null);
   const [options, setOptions] = useState([]);
   const [selectedOption, setSelectedOption] = useState(null);
   const [isRevealed, setIsRevealed] = useState(false);
-  const [score, setScore] = useState(0);
-  const [streak, setStreak] = useState(0);
-  const [totalPlayed, setTotalPlayed] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [showFeedback, setShowFeedback] = useState(false);
 
@@ -87,13 +100,24 @@ const WhosThatPokemon = () => {
     setSelectedOption(option);
     setIsRevealed(true);
     setShowFeedback(true);
-    setTotalPlayed(prev => prev + 1);
+    
+    // Actualizar Redux
+    dispatch(incrementTotalPlayed());
 
     if (option.isCorrect) {
-      setScore(prev => prev + 1);
-      setStreak(prev => prev + 1);
+      dispatch(incrementScore());
+      dispatch(addToHistory({
+        pokemonName: pokemon.name,
+        isCorrect: true,
+        timestamp: Date.now()
+      }));
     } else {
-      setStreak(0);
+      dispatch(resetStreak());
+      dispatch(addToHistory({
+        pokemonName: pokemon.name,
+        isCorrect: false,
+        timestamp: Date.now()
+      }));
     }
   };
 
@@ -104,9 +128,7 @@ const WhosThatPokemon = () => {
 
   // Reiniciar juego
   const handleRestart = () => {
-    setScore(0);
-    setStreak(0);
-    setTotalPlayed(0);
+    dispatch(resetGame());
     fetchRandomPokemon();
   };
 
@@ -170,6 +192,10 @@ const WhosThatPokemon = () => {
             <div className={styles.statItem}>
               <span className={styles.statLabel}>Racha</span>
               <span className={styles.statValue}>🔥 {streak}</span>
+            </div>
+            <div className={styles.statItem}>
+              <span className={styles.statLabel}>Mejor Racha</span>
+              <span className={styles.statValue}>⭐ {bestStreak}</span>
             </div>
             <div className={styles.statItem}>
               <span className={styles.statLabel}>Total</span>
